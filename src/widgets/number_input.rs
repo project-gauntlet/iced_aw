@@ -567,18 +567,6 @@ where
                             _ => event::Status::Ignored,
                         }
                     }
-                    Event::Mouse(mouse::Event::WheelScrolled { delta }) => {
-                        let positive = match delta {
-                            mouse::ScrollDelta::Lines { y, .. }
-                            | mouse::ScrollDelta::Pixels { y, .. } => y.is_sign_positive(),
-                        };
-                        if positive {
-                            self.increase_val(shell);
-                        } else {
-                            self.decrease_val(shell);
-                        }
-                        event::Status::Captured
-                    }
                     _ => self.content.on_event(
                         child, event, content, cursor, renderer, clipboard, shell, viewport,
                     ),
