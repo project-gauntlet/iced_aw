@@ -69,9 +69,9 @@ time = { version = "0.3.36", features = ["local-offset"], optional = true }
 iced_fonts = "0.1.1"
 
 [dependencies.iced]
-#git = "https://github.com/iced-rs/iced.git"
-#rev = "b474a2b7a763dcde6a377cb409001a7b5285ee8d"
-version = "0.13.1"
+git = "https://github.com/project-gauntlet/iced.git"
+branch = "gauntlet-0.13"
+#version = "0.13.1"
 default-features = false
 features = ["advanced"]
 
@@ -83,9 +83,9 @@ num-traits = "0.2.19"   # For widget_id_return example
 rand = "0.8.5"            # For wrap example
 
 [dev-dependencies.iced]
-#git = "https://github.com/iced-rs/iced.git"
-#rev = "b474a2b7a763dcde6a377cb409001a7b5285ee8d"
-version = "0.13.0"
+git = "https://github.com/project-gauntlet/iced.git"
+branch = "gauntlet-0.13"
+#version = "0.13.0"
 #default-features = false
 features = ["advanced", "wgpu"]
 
