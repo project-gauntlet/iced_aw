@@ -512,9 +512,9 @@ where
             .spacing(self.spacing)
             .align_y(Alignment::Center);
 
-        let element: Element<Message, Theme, Renderer> = Element::new(row);
+        let mut element: Element<Message, Theme, Renderer> = Element::new(row);
         let tab_tree = if let Some(child_tree) = tree.children.get_mut(0) {
-            child_tree.diff(element.as_widget());
+            child_tree.diff(element.as_widget_mut());
             child_tree
         } else {
             let child_tree = Tree::new(element.as_widget());

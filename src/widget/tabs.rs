@@ -310,12 +310,12 @@ where
 {
     fn children(&self) -> Vec<Tree> {
         let tabs = Tree {
-            tag: Tag::stateless(),
-            state: State::None,
             children: self.tabs.iter().map(Tree::new).collect(),
+            ..Tree::empty()
         };
 
         let bar = Tree {
+            id: None,
             tag: self.tab_bar.tag(),
             state: self.tab_bar.state(),
             children: self.tab_bar.children(),
@@ -324,13 +324,13 @@ where
         vec![bar, tabs]
     }
 
-    fn diff(&self, tree: &mut Tree) {
+    fn diff(&mut self , tree: &mut Tree) {
         if tree.children.is_empty() {
             tree.children = self.children();
         }
 
         if let Some(tabs) = tree.children.get_mut(1) {
-            tabs.diff_children(&self.tabs);
+            tabs.diff_children(&mut self.tabs);
         }
     }
 

@@ -83,8 +83,8 @@ where
         self.elements_iter().map(Tree::new).collect()
     }
 
-    fn diff(&self, tree: &mut Tree) {
-        tree.diff_children(&self.elements_iter().collect::<Vec<_>>());
+    fn diff(&mut self , tree: &mut Tree) {
+        tree.diff_children(&mut self.elements_iter_mut().collect::<Vec<_>>());
     }
 
     fn operate(

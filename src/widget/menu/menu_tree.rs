@@ -143,6 +143,7 @@ where
     pub(super) fn tree(&self) -> Tree {
         Tree {
             tag: self.tag(),
+            id: None,
             state: self.state(),
             children: self.children(),
         }
@@ -171,8 +172,9 @@ where
     }
 
     /// tree: Tree{menu_state, \[item_tree...]}
-    pub(super) fn diff(&self, tree: &mut Tree) {
-        tree.diff_children_custom(&self.items, |tree, item| item.diff(tree), Item::tree);
+    pub(super) fn diff(&mut self, tree: &mut Tree) {
+        let ids = self.items.iter().map(|_| None).collect();
+        tree.diff_children_custom(&mut self.items, ids, |tree, item| item.diff(tree), Item::tree);
     }
 
     /// tree: Tree{ menu_state, \[item_tree...] }
@@ -705,6 +707,7 @@ where
     /// Rebuild state tree
     pub(super) fn tree(&self) -> Tree {
         Tree {
+            id: None,
             tag: self.tag(),
             state: self.state(),
             children: self.children(),
@@ -738,10 +741,10 @@ where
 
     /// tree: Tree{stateless, \[widget_tree, menu_tree]}
     #[allow(clippy::option_if_let_else)]
-    pub(super) fn diff(&self, tree: &mut Tree) {
+    pub(super) fn diff(&mut self, tree: &mut Tree) {
         if let Some(t0) = tree.children.get_mut(0) {
-            t0.diff(&self.item);
-            if let Some(m) = self.menu.as_ref() {
+            t0.diff(&mut self.item);
+            if let Some(m) = self.menu.as_mut() {
                 if let Some(t1) = tree.children.get_mut(1) {
                     m.diff(t1);
                 } else {

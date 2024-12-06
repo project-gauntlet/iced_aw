@@ -147,8 +147,8 @@ where
         vec![Tree::new(&self.underlay), Tree::new((self.overlay)())]
     }
 
-    fn diff(&self, tree: &mut Tree) {
-        tree.diff_children(&[&self.underlay, &(self.overlay)()]);
+    fn diff(&mut self , tree: &mut Tree) {
+        tree.diff_children(&mut [&mut self.underlay, &mut (self.overlay)()]);
     }
 
     fn operate<'b>(
@@ -161,8 +161,8 @@ where
         let s: &mut State = state.state.downcast_mut();
 
         if s.show {
-            let content = (self.overlay)();
-            content.as_widget().diff(&mut state.children[1]);
+            let mut content = (self.overlay)();
+            content.as_widget_mut().diff(&mut state.children[1]);
 
             content
                 .as_widget()
@@ -244,8 +244,8 @@ where
         }
 
         let position = s.cursor_position;
-        let content = (self.overlay)();
-        content.as_widget().diff(&mut state.children[1]);
+        let mut content = (self.overlay)();
+        content.as_widget_mut().diff(&mut state.children[1]);
         Some(
             ContextMenuOverlay::new(
                 position + translation,

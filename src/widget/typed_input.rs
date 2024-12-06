@@ -240,8 +240,8 @@ where
         <TextInput<_, _, _> as Widget<_, _, _>>::children(&self.text_input)
     }
 
-    fn diff(&self, state: &mut Tree) {
-        <TextInput<_, _, _> as Widget<_, _, _>>::diff(&self.text_input, state);
+    fn diff(&mut self, state: &mut Tree) {
+        <TextInput<_, _, _> as Widget<_, _, _>>::diff(&mut self.text_input, state);
     }
 
     fn size(&self) -> Size<Length> {

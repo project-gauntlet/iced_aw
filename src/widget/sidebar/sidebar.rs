@@ -501,9 +501,9 @@ where
             .height(self.height)
             .spacing(self.spacing)
             .align_x(self.align_tabs);
-        let element: Element<Message, Theme, Renderer> = Element::new(column);
+        let mut element: Element<Message, Theme, Renderer> = Element::new(column);
         let tab_tree = if let Some(child_tree) = tree.children.get_mut(0) {
-            child_tree.diff(element.as_widget());
+            child_tree.diff(element.as_widget_mut());
             child_tree
         } else {
             let child_tree = Tree::new(element.as_widget());
@@ -1209,11 +1209,11 @@ where
 {
     fn children(&self) -> Vec<Tree> {
         let tabs = Tree {
-            tag: Tag::stateless(),
-            state: State::None,
             children: self.tabs.iter().map(Tree::new).collect(),
+            ..Tree::empty()
         };
         let bar = Tree {
+            id: None,
             tag: self.sidebar.tag(),
             state: self.sidebar.state(),
             children: self.sidebar.children(),
@@ -1221,13 +1221,13 @@ where
         vec![bar, tabs]
     }
 
-    fn diff(&self, tree: &mut Tree) {
+    fn diff(&mut self , tree: &mut Tree) {
         if tree.children.is_empty() {
             tree.children = self.children();
         }
 
         if let Some(tabs) = tree.children.get_mut(1) {
-            tabs.diff_children(&self.tabs);
+            tabs.diff_children(&mut self.tabs);
         }
     }
 

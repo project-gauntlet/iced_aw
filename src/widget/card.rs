@@ -243,11 +243,11 @@ where
         )
     }
 
-    fn diff(&self, tree: &mut Tree) {
-        if let Some(foot) = self.foot.as_ref() {
-            tree.diff_children(&[&self.head, &self.body, foot]);
+    fn diff(&mut self, tree: &mut Tree) {
+        if let Some(foot) = self.foot.as_mut() {
+            tree.diff_children(&mut [&mut self.head, &mut self.body, foot]);
         } else {
-            tree.diff_children(&[&self.head, &self.body]);
+            tree.diff_children(&mut [&mut self.head, &mut self.body]);
         }
     }
 
@@ -511,7 +511,7 @@ where
         state: &Tree,
         renderer: &mut Renderer,
         theme: &Theme,
-        _style: &renderer::Style,
+        style: &renderer::Style,
         layout: Layout<'_>,
         cursor: Cursor,
         viewport: &Rectangle,
@@ -565,6 +565,7 @@ where
             theme,
             &style_sheet,
             self.close_size,
+            style
         );
 
         // ----------- Body ----------------------
@@ -580,6 +581,7 @@ where
             viewport,
             theme,
             &style_sheet,
+            style
         );
 
         // ----------- Foot ----------------------
@@ -595,6 +597,7 @@ where
             viewport,
             theme,
             &style_sheet,
+            style
         );
     }
 
@@ -768,6 +771,7 @@ fn draw_head<Message, Theme, Renderer>(
     theme: &Theme,
     style: &Style,
     close_size: Option<f32>,
+    renderer_style: &renderer::Style
 ) where
     Renderer: renderer::Renderer + iced::advanced::text::Renderer<Font = iced::Font>,
     Theme: Catalog,
@@ -819,7 +823,9 @@ fn draw_head<Message, Theme, Renderer>(
         renderer,
         theme,
         &renderer::Style {
+            icon_color: renderer_style.icon_color,
             text_color: style.head_text_color,
+            scale_factor: renderer_style.scale_factor
         },
         head_children
             .next()
@@ -865,6 +871,7 @@ fn draw_body<Message, Theme, Renderer>(
     viewport: &Rectangle,
     theme: &Theme,
     style: &Style,
+    renderer_style: &renderer::Style
 ) where
     Renderer: renderer::Renderer + iced::advanced::text::Renderer<Font = iced::Font>,
     Theme: Catalog,
@@ -893,7 +900,9 @@ fn draw_body<Message, Theme, Renderer>(
         renderer,
         theme,
         &renderer::Style {
+            icon_color: renderer_style.icon_color,
             text_color: style.body_text_color,
+            scale_factor: renderer_style.scale_factor
         },
         body_children
             .next()
@@ -914,6 +923,7 @@ fn draw_foot<Message, Theme, Renderer>(
     viewport: &Rectangle,
     theme: &Theme,
     style: &Style,
+    renderer_style: &renderer::Style
 ) where
     Renderer: renderer::Renderer + iced::advanced::text::Renderer<Font = iced::Font>,
     Theme: Catalog,
@@ -943,7 +953,9 @@ fn draw_foot<Message, Theme, Renderer>(
             renderer,
             theme,
             &renderer::Style {
+                icon_color: renderer_style.icon_color,
                 text_color: style.foot_text_color,
+                scale_factor: renderer_style.scale_factor
             },
             foot_children
                 .next()
