@@ -987,9 +987,9 @@ where
                 ),
         );
     }
-    let mut element: Element<Message, Theme, Renderer> = Element::new(rgba_colors);
+    let element: Element<Message, Theme, Renderer> = Element::new(rgba_colors);
     let rgba_tree = if let Some(child_tree) = color_picker.tree.children.get_mut(2) {
-        child_tree.diff(element.as_widget_mut());
+        child_tree.diff(element.as_widget());
         child_tree
     } else {
         let child_tree = Tree::new(element.as_widget());
@@ -1764,8 +1764,8 @@ where
         ]
     }
 
-    fn diff(&mut self, tree: &mut Tree) {
-        tree.diff_children(&mut [&mut self.cancel_button, &mut self.submit_button]);
+    fn diff(&self, tree: &mut Tree) {
+        tree.diff_children(&[&self.cancel_button, &self.submit_button]);
     }
 
     fn size(&self) -> Size<Length> {

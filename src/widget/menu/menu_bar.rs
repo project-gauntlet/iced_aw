@@ -153,9 +153,8 @@ where
     }
 
     /// tree: Tree{bar_state, \[item_tree...]}
-    fn diff(&mut self , tree: &mut Tree) {
-        let ids = self.roots.iter().map(|_| None).collect();
-        tree.diff_children_custom(&mut self.roots, ids, |tree, item| item.diff(tree), Item::tree);
+    fn diff(&self, tree: &mut Tree) {
+        tree.diff_children_custom(&self.roots, |tree, item| item.diff(tree), Item::tree);
     }
 
     /// tree: Tree{bar_state, \[item_tree...]}

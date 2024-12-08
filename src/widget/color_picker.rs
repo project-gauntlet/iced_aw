@@ -180,14 +180,14 @@ where
         vec![Tree::new(&self.underlay), Tree::new(&self.overlay_state)]
     }
 
-    fn diff(&mut self, tree: &mut Tree) {
+    fn diff(&self, tree: &mut Tree) {
         let color_picker_state = tree.state.downcast_mut::<State>();
 
         if color_picker_state.overlay_state.color != self.color {
             color_picker_state.overlay_state.color = self.color;
         }
 
-        tree.diff_children(&mut [&mut self.underlay, &mut self.overlay_state]);
+        tree.diff_children(&[&self.underlay, &self.overlay_state]);
     }
 
     fn size(&self) -> iced::Size<Length> {

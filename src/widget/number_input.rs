@@ -324,20 +324,17 @@ where
 
     fn children(&self) -> Vec<Tree> {
         vec![Tree {
-            id: None,
             tag: self.content.tag(),
             state: self.content.state(),
             children: self.content.children(),
         }]
     }
 
-    fn diff(&mut self, tree: &mut Tree) {
+    fn diff(&self, tree: &mut Tree) {
         tree.diff_children_custom(
-            &mut [&mut self.content],
-            vec![None],
+            &[&self.content],
             |state, content| content.diff(state),
-            |content| Tree {
-                id: None,
+            |&content| Tree {
                 tag: content.tag(),
                 state: content.state(),
                 children: content.children(),
@@ -367,7 +364,7 @@ where
 
         let default_padding = DEFAULT_PADDING;
 
-        let mut element = if self.padding.top < default_padding.top
+        let element = if self.padding.top < default_padding.top
             || self.padding.bottom < default_padding.bottom
             || self.padding.right < default_padding.right
         {
@@ -389,7 +386,7 @@ where
         };
 
         let input_tree = if let Some(child_tree) = tree.children.get_mut(1) {
-            child_tree.diff(element.as_widget_mut());
+            child_tree.diff(element.as_widget());
             child_tree
         } else {
             let child_tree = Tree::new(element.as_widget());

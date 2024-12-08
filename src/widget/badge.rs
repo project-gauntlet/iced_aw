@@ -145,8 +145,8 @@ where
         vec![Tree::new(&self.content)]
     }
 
-    fn diff(&mut self, tree: &mut Tree) {
-        tree.diff_children(std::slice::from_mut(&mut self.content));
+    fn diff(&self, tree: &mut Tree) {
+        tree.diff_children(std::slice::from_ref(&self.content));
     }
 
     fn size(&self) -> Size<Length> {
@@ -225,7 +225,7 @@ where
         tree: &Tree,
         renderer: &mut Renderer,
         theme: &Theme,
-        style: &renderer::Style,
+        _style: &renderer::Style,
         layout: Layout<'_>,
         cursor: Cursor,
         viewport: &Rectangle,
@@ -268,9 +268,7 @@ where
             renderer,
             theme,
             &renderer::Style {
-                icon_color: style.icon_color,
                 text_color: style_sheet.text_color,
-                scale_factor: style.scale_factor,
             },
             children
                 .next()
